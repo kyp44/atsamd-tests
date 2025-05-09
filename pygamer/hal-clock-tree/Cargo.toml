@@ -1,0 +1,7 @@
+[package]
+edition = "2021"
+name = "hal-clock-tree"
+version = "0.1.0"
+
+[dependencies]
+shared-pygamer = {path = "../../lib/shared-pygamer"}

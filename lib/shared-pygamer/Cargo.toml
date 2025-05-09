@@ -1,0 +1,18 @@
+[package]
+edition = "2021"
+name = "shared-pygamer"
+version = "0.1.0"
+
+[dependencies]
+derive_more = {version = "2.0.1", default-features = false, features = ["from"]}
+shared = {path = "../shared", features = ["pygamer"]}
+smart-leds = {version = "0.4.0", optional = true}
+ws2812-spi = {version = "0.5", features = ["mosi_idle_high"], optional = true}
+
+[features]
+clock1k = ["shared/clock1k"]
+clock32k = ["shared/clock32k"]
+debug = ["rtic"]
+neopixels = ["dep:smart-leds", "dep:ws2812-spi", "shared/neopixels"]
+rtic = ["shared/rtic"]
+systick = ["shared/systick"]

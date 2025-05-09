@@ -1,0 +1,44 @@
+use crate::{
+    display::{Display, DisplayWriter},
+    Input,
+};
+use derive_new::new;
+use embedded_graphics::{prelude::*, text};
+
+#[derive(new)]
+pub struct ScreensGen<D: Display + 'static, I> {
+    display: D,
+    input: I,
+}
+impl<D: Display, I: Input> ScreensGen<D, I>
+where
+    D::Error: core::fmt::Debug,
+{
+    pub fn new_screen(&mut self) -> DisplayWriter<D> {
+        self.display.clear(D::BACKGROUND_COLOR).unwrap();
+
+        let style = self.display.display_text_style(Point::zero());
+        DisplayWriter::new(&mut self.display, style)
+    }
+
+    fn button_message(&mut self) {
+        text::Text::with_text_style(
+            "Press a button to continue...",
+            Point::new(0, (self.display.size().height - 1) as i32),
+            self.display.character_style(),
+            text::TextStyleBuilder::new()
+                .baseline(text::Baseline::Bottom)
+                .build(),
+        )
+        .draw(&mut self.display)
+        .unwrap();
+    }
+
+    pub async fn wait_for_button(&mut self) -> DisplayWriter<D> {
+        self.button_message();
+        self.display.flush().await;
+
+        self.input.wait_for_button().await;
+        self.new_screen()
+    }
+}

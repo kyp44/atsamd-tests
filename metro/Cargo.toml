@@ -1,0 +1,11 @@
+[workspace]
+members = [
+  "basic",
+  "hal-rtc",
+]
+resolver = "2"
+
+[patch.crates-io]
+atsamd-hal = {path = "../../atsamd/hal"}
+metro_m0 = {path = "../../atsamd/boards/metro_m0"}
+sh1107 = {path = "../../sh1107"}

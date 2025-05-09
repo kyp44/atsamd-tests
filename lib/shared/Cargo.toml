@@ -1,0 +1,28 @@
+[package]
+edition = "2021"
+name = "shared"
+version = "0.1.0"
+
+[dependencies]
+atsamd-hal = {version = "0.22"}
+cortex-m = {version = "0.7.7", features = ["critical-section-single-core"]}
+cortex-m-rt = "0.7.5"
+derive-new = "0.7.0"
+embedded-graphics = "0.8.1"
+fugit = "0.3.7"
+futures-task = {version = "0.3.31", default-features = false}
+metro_m0 = {version = "0.19.0", features = ["rt", "async"], optional = true}
+nb = "1.1.0"
+pygamer = {version = "0.15", features = ["rt", "async"], optional = true}
+rtic = {version = "2.1.2", features = ["thumbv7-backend"], optional = true}
+rtic-monotonics = {version = "2.0.3", features = ["cortex-m-systick"], optional = true}
+
+[features]
+clock1k = ["atsamd-hal/rtic"]
+clock32k = ["atsamd-hal/rtic"]
+debug = ["rtic"]
+metro = ["dep:metro_m0"]
+neopixels = ["pygamer/neopixel-spi"]
+pygamer = ["dep:pygamer"]
+rtic = ["dep:rtic"]
+systick = ["dep:rtic-monotonics"]

@@ -1,0 +1,8 @@
+[package]
+edition = "2021"
+name = "hal-delay-ns"
+version = "0.1.0"
+
+[dependencies]
+derive-new = "0.7.0"
+shared = {path = "../../shared", features = ["pygamer", "clock1k"]}

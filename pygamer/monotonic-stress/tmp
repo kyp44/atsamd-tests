@@ -1,0 +1,46 @@
+   Compiling monotonic-stress v0.1.0 (/whitman/workspace/kuboble/atsamd-tests/pygamer/monotonic-stress)
+error[E0425]: cannot find value `FONT` in the crate root
+  --> monotonic-stress/src/tasks.rs:62:27
+   |
+62 |             .font(&crate::FONT)
+   |                           ^^^^ not found in the crate root
+
+error[E0405]: cannot find trait `SmartLedsWrite` in this scope
+  --> monotonic-stress/src/tasks.rs:80:32
+   |
+80 | pub async fn neopixels_task<S: SmartLedsWrite<Color = RGB8>>(neopixels: &mut S, delay_ms: u32) -> !
+   |                                ^^^^^^^^^^^^^^ not found in this scope
+
+error[E0412]: cannot find type `RGB8` in this scope
+  --> monotonic-stress/src/tasks.rs:80:55
+   |
+80 | pub async fn neopixels_task<S: SmartLedsWrite<Color = RGB8>>(neopixels: &mut S, delay_ms: u32) -> !
+   |                                                       ^^^^ not found in this scope
+
+error[E0412]: cannot find type `NeoPixelsDriver` in this scope
+  --> monotonic-stress/src/main.rs:28:20
+   |
+28 |         neopixels: NeoPixelsDriver,
+   |                    ^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0433]: failed to resolve: use of undeclared type `RGB8`
+  --> monotonic-stress/src/tasks.rs:85:9
+   |
+85 |         RGB8::new(10, 0, 0),
+   |         ^^^^ use of undeclared type `RGB8`
+
+error[E0433]: failed to resolve: use of undeclared type `RGB8`
+  --> monotonic-stress/src/tasks.rs:86:9
+   |
+86 |         RGB8::new(0, 10, 0),
+   |         ^^^^ use of undeclared type `RGB8`
+
+error[E0433]: failed to resolve: use of undeclared type `RGB8`
+  --> monotonic-stress/src/tasks.rs:87:9
+   |
+87 |         RGB8::new(0, 0, 10),
+   |         ^^^^ use of undeclared type `RGB8`
+
+Some errors have detailed explanations: E0405, E0412, E0425, E0433.
+For more information about an error, try `rustc --explain E0405`.
+error: could not compile `monotonic-stress` (bin "monotonic-stress") due to 7 previous errors

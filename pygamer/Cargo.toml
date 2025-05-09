@@ -1,0 +1,25 @@
+[workspace]
+members = [
+  "basic",
+  "hal-clock-tree", #"pygamer/hal-delay-ns",
+  "hal-rtc",
+  "monotonic-basic",
+  "monotonic-count-sequence",
+  "monotonic-disable-pend",
+  "monotonic-stress",
+]
+resolver = "2"
+
+[patch.crates-io]
+atsamd-hal = {path = "../../atsamd/hal"}
+pygamer = {path = "../../atsamd/boards/pygamer"}
+
+[profile.dev]
+debug = true 
+incremental = false 
+lto = "thin" # thin for debug speed
+opt-level = 2 
+
+[profile.release]
+lto = "fat"
+opt-level = 's'

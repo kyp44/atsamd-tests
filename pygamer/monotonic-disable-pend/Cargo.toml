@@ -1,0 +1,13 @@
+[package]
+edition = "2021"
+name = "monotonic-disable-pend"
+version = "0.1.0"
+
+[dependencies]
+shared-pygamer = {path = "../../lib/shared-pygamer", features = ["rtic"]}
+
+[features]
+clock1k = ["shared-pygamer/clock1k"]
+clock32k = ["shared-pygamer/clock32k"]
+debug = ["shared-pygamer/debug"]
+systick = ["shared-pygamer/systick"]
