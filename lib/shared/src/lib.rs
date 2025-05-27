@@ -1,7 +1,6 @@
 #![no_std]
 #![feature(let_chains)]
 #![feature(iter_advance_by)]
-#![allow(async_fn_in_trait)]
 #![feature(generic_const_exprs)]
 
 use core::future::Future;
@@ -57,7 +56,7 @@ pub mod prelude {
     pub use rtic;
 }
 pub trait Input {
-    async fn wait_for_button(&mut self);
+    fn wait_for_button(&mut self);
 }
 
 pub fn block_on<F: Future>(mut future: F) -> F::Output {

@@ -5,7 +5,6 @@ version = "0.1.0"
 
 [dependencies]
 derive_more = {version = "2.0.1", default-features = false, features = ["from"]}
-embassy-futures = "0.1.1"
 sh1107 = "0.3.5"
 shared = {path = "../shared", features = ["metro"]}
 

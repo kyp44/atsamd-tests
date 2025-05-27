@@ -11,8 +11,8 @@ fn main() -> ! {
         CorePeripherals::take().unwrap(),
     );
 
-    block_on(tests::hal_rtc(
+    tests::hal_rtc(
         Screens::new(pkg.display, pkg.buttons),
         Rtc::count32_mode(pkg.rtc, RTC_CLOCK_RATE, &mut pkg.mclk),
-    ));
+    );
 }

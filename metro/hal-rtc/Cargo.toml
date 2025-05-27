@@ -4,7 +4,4 @@ name = "hal-rtc"
 version = "0.1.0"
 
 [dependencies]
-cortex-m-rt = "0.7.5"
-# This has to be in the binary crates of the `task` and `main` macros will fail.
-embassy-executor = {version = "0.7.0", features = ["arch-cortex-m", "executor-thread"]}
 shared-metro = {path = "../../lib/shared-metro", features = ["clock1k"]}

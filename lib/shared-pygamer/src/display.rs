@@ -28,14 +28,16 @@ impl Display for DisplayDriver {
     const PANIC_BACKGROUND_COLOR: Self::Color = Rgb565::RED;
     const PANIC_TEXT_COLOR: Self::Color = Rgb565::BLACK;
 
-    async fn flush(&mut self) {
+    fn flush(&mut self) {
         // This display has no need to flush
     }
 }
 
 #[panic_handler]
 fn panic(info: &core::panic::PanicInfo) -> ! {
-    let pkg = unsafe { crate::setup(pac::Peripherals::steal(), pac::CorePeripherals::steal()) };
+    let pkg = unsafe {
+        crate::SetupPackage::new(pac::Peripherals::steal(), pac::CorePeripherals::steal())
+    };
 
     panic_display(pkg.display, info);
 }

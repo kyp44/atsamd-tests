@@ -4,17 +4,22 @@
 use hal::rtc::Rtc;
 use shared_metro::prelude::*;
 
-#[embassy_executor::main]
-async fn main(_s: embassy_executor::Spawner) {
+#[entry]
+fn main() -> ! {
     // Setup stuff
-    let mut pkg = setup(
+    let mut pkg = SetupPackage::new(
         Peripherals::take().unwrap(),
         CorePeripherals::take().unwrap(),
-    )
-    .await;
+    );
+    pkg.setup_rtc_clock();
 
-    tests::hal_rtc(
+    let screens = Screens::new(pkg.display, pkg.buttons);
+    let rtc = Rtc::count32_mode(pkg.rtc, RTC_CLOCK_RATE, &mut pkg.pm);
+
+    tests::hal_rtc(screens, rtc);
+
+    /* tests::hal_rtc(
         Screens::new(pkg.display, pkg.buttons),
         Rtc::count32_mode(pkg.rtc, RTC_CLOCK_RATE, &mut pkg.pm),
-    ).await;
+    ); */
 }

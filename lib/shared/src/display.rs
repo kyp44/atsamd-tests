@@ -1,5 +1,4 @@
 use core::fmt::Write;
-use core::future::Future;
 use embedded_graphics::{
     mono_font::{self, MonoTextStyle},
     prelude::*,
@@ -44,7 +43,7 @@ pub trait Display: DrawTarget + OriginDimensions {
     const PANIC_BACKGROUND_COLOR: Self::Color;
     const PANIC_TEXT_COLOR: Self::Color;
 
-    async fn flush(&mut self);
+    fn flush(&mut self);
 
     #[inline]
     fn character_style(&self) -> MonoTextStyle<'static, Self::Color> {
@@ -85,7 +84,8 @@ impl<'a, D: Display> DisplayWriter<'a, D> {
         }
     }
 
-    pub fn flush(&mut self) -> impl Future + '_ {
+    #[inline]
+    pub fn flush(&mut self) {
         self.display.flush()
     }
 
@@ -173,6 +173,8 @@ impl<D: Display> core::fmt::Write for DisplayWriter<'_, D> {
 
 #[inline]
 pub fn panic_display<D: Display>(mut display: D, info: &core::panic::PanicInfo) -> ! {
+    cortex_m::interrupt::disable();
+
     let style = DisplayTextStyle::new(
         Point::zero(),
         Some(display.size()),
@@ -188,7 +190,7 @@ pub fn panic_display<D: Display>(mut display: D, info: &core::panic::PanicInfo) 
     );
 
     let _ = write!(DisplayWriter::new(&mut display, style), "{info}");
-    crate::block_on(display.flush());
+    display.flush();
 
     // Just go to sleep forever
     cortex_m::interrupt::disable();

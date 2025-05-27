@@ -1,16 +1,16 @@
 #![no_std]
 
 use bsp::{Pins, RedLed};
-pub use display::{DisplayDriver, DisplayIrq};
-use hal::clock::GenericClockController;
-pub use input::{ButtonIrq, Buttons};
+pub use display::DisplayDriver;
+use hal::clock::{ClockGenId, ClockSource, GenericClockController};
+pub use input::{Button, Buttons};
 use shared::prelude::*;
 
 mod display;
 mod input;
 
 pub mod prelude {
-    pub use super::{setup, ButtonIrq, Buttons, DisplayDriver, DisplayIrq, Screens};
+    pub use super::{Buttons, DisplayDriver, Screens, SetupPackage};
     pub use bsp::entry;
     pub use shared::prelude::*;
 }
@@ -26,68 +26,73 @@ pub struct SetupPackage {
     pub pm: pac::Pm,
     pub syst: pac::SYST,
 }
+impl SetupPackage {
+    pub fn new(mut peripherals: pac::Peripherals, core: pac::CorePeripherals) -> Self {
+        use hal::fugit::RateExtU32;
+        use sh1107::prelude::*;
 
-pub async fn setup(mut peripherals: pac::Peripherals, core: pac::CorePeripherals) -> SetupPackage {
-    use hal::fugit::RateExtU32;
-    use sh1107::prelude::*;
+        let mut clocks = GenericClockController::with_external_32kosc(
+            peripherals.gclk,
+            &mut peripherals.pm,
+            &mut peripherals.sysctrl,
+            &mut peripherals.nvmctrl,
+        );
+        let pins = Pins::new(peripherals.port);
 
-    let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.gclk,
-        &mut peripherals.pm,
-        &mut peripherals.sysctrl,
-        &mut peripherals.nvmctrl,
-    );
-    let pins = Pins::new(peripherals.port);
+        // Setup the display
+        let i2c = bsp::i2c_master(
+            &mut clocks,
+            400.kHz(),
+            peripherals.sercom3,
+            &mut peripherals.pm,
+            pins.sda,
+            pins.scl,
+        );
 
-    // Setup the external interrupt controller and async buttons
-    let gclk0 = clocks.gclk0();
-    let eic_channels = hal::eic::Eic::new(
-        &mut peripherals.pm,
-        clocks.eic(&gclk0).unwrap(),
-        peripherals.eic,
-    )
-    .into_future(ButtonIrq)
-    .split();
-    let mut button_a = eic_channels.7.with_pin(pins.d9.into_pull_up_interrupt());
-    let mut button_b = eic_channels.4.with_pin(pins.d6.into_pull_up_interrupt());
-    let mut button_c = eic_channels.15.with_pin(pins.d5.into_pull_up_interrupt());
-    button_a.filter(true);
-    button_b.filter(true);
-    button_c.filter(true);
+        let mut display: GraphicsMode<_> = sh1107::Builder::new()
+            .with_size(DisplaySize::Display64x128)
+            .with_rotation(DisplayRotation::Rotate90)
+            .connect_i2c(i2c)
+            .into();
 
-    // Setup the display
-    let i2c = bsp::i2c_master(
-        &mut clocks,
-        400.kHz(),
-        peripherals.sercom3,
-        &mut peripherals.pm,
-        pins.sda,
-        pins.scl,
-    )
-    .into_future(DisplayIrq);
+        //display.init().await.unwrap();
+        display.init().unwrap();
+        display.clear();
+        display.flush().unwrap();
 
-    let mut display: GraphicsMode<_> = sh1107::Builder::new()
-        .with_size(DisplaySize::Display64x128)
-        .with_rotation(DisplayRotation::Rotate90)
-        .connect_i2c(i2c)
-        .into();
+        Self {
+            display: display.into(),
+            buttons: Buttons {
+                button_a: pins.d9.into_pull_up_input().into(),
+                button_b: pins.d6.into_pull_up_input().into(),
+                button_c: pins.d5.into_pull_up_input().into(),
+            },
+            red_led: pins.d13.into(),
+            rtc: peripherals.rtc,
+            clocks,
+            pm: peripherals.pm,
+            syst: core.SYST,
+        }
+    }
 
-    //display.init().await.unwrap();
-    display.init().await.unwrap();
-    display.clear();
-    display.flush().await.unwrap();
+    #[cfg(any(feature = "clock1k", feature = "clock32k"))]
+    pub fn setup_rtc_clock(&mut self) {
+        #[cfg(feature = "clock1k")]
+        let divider = 32;
+        #[cfg(feature = "clock32k")]
+        let divider = 1;
 
-    SetupPackage {
-        display: display.into(),
-        buttons: Buttons {
-            button_a,
-            button_b,
-            button_c,
-        },
-        red_led: pins.d13.into(),
-        rtc: peripherals.rtc,
-        clocks,
-        pm: peripherals.pm,
-        syst: core.SYST,
+        let rtc_clock_src = self
+            .clocks
+            .configure_gclk_divider_and_source(
+                ClockGenId::Gclk3,
+                divider,
+                ClockSource::Xosc32k,
+                false,
+            )
+            .unwrap();
+
+        self.clocks.configure_standby(ClockGenId::Gclk3, true);
+        let _ = self.clocks.rtc(&rtc_clock_src).unwrap();
     }
 }

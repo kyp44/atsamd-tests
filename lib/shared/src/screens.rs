@@ -34,11 +34,11 @@ where
         .unwrap();
     }
 
-    pub async fn wait_for_button(&mut self) -> DisplayWriter<D> {
+    pub fn wait_for_button(&mut self) -> DisplayWriter<D> {
         self.button_message();
-        self.display.flush().await;
+        self.display.flush();
 
-        self.input.wait_for_button().await;
+        self.input.wait_for_button();
         self.new_screen()
     }
 }
