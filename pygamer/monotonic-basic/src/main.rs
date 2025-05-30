@@ -58,10 +58,11 @@ mod app {
 
     #[init]
     fn init(cx: init::Context) -> (Shared, Local) {
-        let mut pkg = setup(cx.device, cx.core);
+        let mut pkg = SetupPackage::new(cx.device, cx.core);
+        let rtc = pkg.setup_rtc_clock().unwrap();
 
         // Start the monotonic
-        Mono::general_start(pkg.delay.free(), pkg.rtc);
+        Mono::general_start(pkg.delay.free(), rtc);
 
         // Display selected monotonic and clock
         display_monotonic_info(&mut pkg.display);

@@ -21,7 +21,7 @@ pub struct SetupPackage {
     pub display: DisplayDriver,
     pub buttons: Buttons,
     pub red_led: RedLed,
-    pub rtc: pac::Rtc,
+    rtc: Option<pac::Rtc>,
     pub clocks: GenericClockController,
     pub pm: pac::Pm,
     pub syst: pac::SYST,
@@ -68,7 +68,7 @@ impl SetupPackage {
                 button_c: pins.d5.into_pull_up_input().into(),
             },
             red_led: pins.d13.into(),
-            rtc: peripherals.rtc,
+            rtc: Some(peripherals.rtc),
             clocks,
             pm: peripherals.pm,
             syst: core.SYST,
@@ -76,7 +76,7 @@ impl SetupPackage {
     }
 
     #[cfg(any(feature = "clock1k", feature = "clock32k"))]
-    pub fn setup_rtc_clock(&mut self) {
+    pub fn setup_rtc_clock(&mut self) -> Option<pac::Rtc> {
         #[cfg(feature = "clock1k")]
         let divider = 32;
         #[cfg(feature = "clock32k")]
@@ -94,5 +94,7 @@ impl SetupPackage {
 
         self.clocks.configure_standby(ClockGenId::Gclk3, true);
         let _ = self.clocks.rtc(&rtc_clock_src).unwrap();
+
+        self.rtc.take()
     }
 }

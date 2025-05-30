@@ -11,15 +11,10 @@ fn main() -> ! {
         Peripherals::take().unwrap(),
         CorePeripherals::take().unwrap(),
     );
-    pkg.setup_rtc_clock();
+    let rtc = pkg.setup_rtc_clock().unwrap();
 
     let screens = Screens::new(pkg.display, pkg.buttons);
-    let rtc = Rtc::count32_mode(pkg.rtc, RTC_CLOCK_RATE, &mut pkg.pm);
+    let rtc = Rtc::count32_mode(rtc, RTC_CLOCK_RATE, &mut pkg.pm);
 
     tests::hal_rtc(screens, rtc);
-
-    /* tests::hal_rtc(
-        Screens::new(pkg.display, pkg.buttons),
-        Rtc::count32_mode(pkg.rtc, RTC_CLOCK_RATE, &mut pkg.pm),
-    ); */
 }

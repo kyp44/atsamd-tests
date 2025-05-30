@@ -6,7 +6,7 @@ use shared_pygamer::prelude::*;
 
 #[entry]
 fn main() -> ! {
-    let mut pkg = setup(
+    let mut pkg = SetupPackage::new(
         Peripherals::take().unwrap(),
         CorePeripherals::take().unwrap(),
     );

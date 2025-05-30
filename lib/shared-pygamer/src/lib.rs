@@ -33,7 +33,7 @@ pub struct SetupPackage {
     pub neopixels: NeoPixelsDriver,
     pub red_led: RedLed,
     pub tc4: pac::Tc4,
-    pub rtc: pac::Rtc,
+    rtc: Option<pac::Rtc>,
     pub clocks: GenericClockController,
     pub mclk: pac::Mclk,
     pub osc32kctrl: pac::Osc32kctrl,
@@ -95,18 +95,20 @@ impl SetupPackage {
             neopixels,
             red_led: pins.led_pin.into(),
             tc4: peripherals.tc4,
-            rtc: peripherals.rtc,
+            rtc: Some(peripherals.rtc),
             clocks,
             mclk: peripherals.mclk,
             osc32kctrl: peripherals.osc32kctrl,
         }
     }
 
-    pub fn setup_rtc_clock(&self) {
+    pub fn setup_rtc_clock(&mut self) -> Option<pac::Rtc> {
         // NOTE: Selecting the RTC clock requires the clocks v2 API on SAMx5x chips!
         #[cfg(feature = "clock1k")]
         self.osc32kctrl.rtcctrl().write(|w| w.rtcsel().ulp1k());
         #[cfg(feature = "clock32k")]
         self.osc32kctrl.rtcctrl().write(|w| w.rtcsel().ulp32k());
+
+        self.rtc.take()
     }
 }
