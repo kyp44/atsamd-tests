@@ -75,9 +75,8 @@ impl SetupPackage {
         }
     }
 
-    #[cfg(any(feature = "clock1k", feature = "clock32k"))]
     pub fn setup_rtc_clock(&mut self) -> Option<pac::Rtc> {
-        #[cfg(feature = "clock1k")]
+        #[cfg(not(feature = "clock32k"))]
         let divider = 32;
         #[cfg(feature = "clock32k")]
         let divider = 1;

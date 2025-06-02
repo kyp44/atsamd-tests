@@ -1,3 +1,4 @@
+//! A basic test of the RTC-based RTIC monotonic.
 #![no_std]
 #![no_main]
 

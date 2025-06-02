@@ -1,3 +1,4 @@
+//! Just a basic program to test the display and its buttons.
 #![no_std]
 #![no_main]
 #![feature(impl_trait_in_assoc_type)]

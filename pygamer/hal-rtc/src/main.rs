@@ -1,3 +1,6 @@
+//! Program to test the modes and features of the RTC abstraction.
+//!
+//! Refer to `atsamd-hal` [PR 845](https://github.com/atsamd-rs/atsamd/pull/845).
 #![no_std]
 #![no_main]
 

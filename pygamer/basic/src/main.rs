@@ -1,3 +1,4 @@
+//! A basic Hello World test program.
 #![no_std]
 #![no_main]
 

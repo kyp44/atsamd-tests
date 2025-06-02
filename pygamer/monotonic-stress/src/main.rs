@@ -1,3 +1,4 @@
+//! A stress test of the RTC-based RTIC monotonic that uses over 768 concurrent tasks.
 #![no_std]
 #![no_main]
 

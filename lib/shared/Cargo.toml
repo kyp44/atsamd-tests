@@ -21,6 +21,7 @@ rtic-monotonics = {version = "2.0.3", features = ["cortex-m-systick"], optional 
 clock1k = ["atsamd-hal/rtic"]
 clock32k = ["atsamd-hal/rtic"]
 debug = ["rtic"]
+hal-rtc-test = []
 metro = ["dep:metro_m0"]
 neopixels = ["pygamer/neopixel-spi"]
 pygamer = ["dep:pygamer"]
