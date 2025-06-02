@@ -1,3 +1,4 @@
+//! Tests setting up a clock tree using the v2 clock API.
 #![no_std]
 #![no_main]
 

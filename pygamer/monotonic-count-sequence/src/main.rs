@@ -1,3 +1,4 @@
+//! A test of the RTC-based RTIC monotonic that just prints out subsequent RTC count values.
 #![no_std]
 #![no_main]
 

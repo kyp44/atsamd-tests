@@ -33,8 +33,6 @@ pub mod prelude {
     pub use super::display::*;
     #[cfg(any(feature = "clock1k", feature = "clock32k", feature = "systick"))]
     pub use super::monotonic::{display_monotonic_info, Mono};
-    #[cfg(any(feature = "metro", feature = "pygamer"))]
-    pub use super::tests;
     pub use super::Input;
     #[cfg(any(feature = "clock1k", feature = "clock32k"))]
     pub use super::RTC_CLOCK_RATE;

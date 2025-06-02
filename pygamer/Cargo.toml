@@ -1,11 +1,11 @@
 [workspace]
 members = [
   "basic",
-  "hal-clock-tree", #"pygamer/hal-delay-ns",
+  "hal-clock-tree",
+  "hal-delay-ns",
   "hal-rtc",
   "monotonic-basic",
   "monotonic-count-sequence",
-  "monotonic-disable-pend",
   "monotonic-stress",
 ]
 resolver = "2"

@@ -14,7 +14,7 @@ impl<D: Display, I: Input> ScreensGen<D, I>
 where
     D::Error: core::fmt::Debug,
 {
-    pub fn new_screen(&mut self) -> DisplayWriter<D> {
+    pub fn new_screen(&mut self) -> DisplayWriter<'_, D> {
         self.display.clear(D::BACKGROUND_COLOR).unwrap();
 
         let style = self.display.display_text_style(Point::zero());
@@ -34,7 +34,7 @@ where
         .unwrap();
     }
 
-    pub fn wait_for_button(&mut self) -> DisplayWriter<D> {
+    pub fn wait_for_button(&mut self) -> DisplayWriter<'_, D> {
         self.button_message();
         self.display.flush();
 

@@ -114,60 +114,60 @@ where
         });
         self.show_counts(rtc, msg)
     }
-}
 
-pub fn hal_rtc<D: Display, I: Input>(mut screens: ScreensGen<D, I>, rtc: Rtc<Count32Mode>) -> !
-where
-    D::Error: core::fmt::Debug,
-{
-    let mut rtc_count = Some(rtc);
+    pub fn hal_rtc_test(mut self, rtc: Rtc<Count32Mode>) -> !
+    where
+        D::Error: core::fmt::Debug,
+    {
+        let mut rtc_count = Some(rtc);
 
-    loop {
-        let mut rtc = rtc_count.take().unwrap();
+        loop {
+            let mut rtc = rtc_count.take().unwrap();
 
-        // Count 32 tests
-        let _ = screens.show_counts(&mut rtc, "Basic counter test");
-        rtc.set_count32(1_000);
-        let _ = screens.show_counts(&mut rtc, "Set counter test");
-        // This should set set the prescalar to 1024
-        rtc.reset_and_compute_prescaler(1u32.hours());
-        let mut writer = screens.show_counts(&mut rtc, "Reset with prescalar");
+            // Count 32 tests
+            let _ = self.show_counts(&mut rtc, "Basic counter test");
+            rtc.set_count32(1_000);
+            let _ = self.show_counts(&mut rtc, "Set counter test");
+            // This should set set the prescalar to 1024
+            rtc.reset_and_compute_prescaler(1u32.hours());
+            let mut writer = self.show_counts(&mut rtc, "Reset with prescalar");
 
-        // Periodic countdown timer test with the ehal 0.2 `Countdown` trait
-        writeln!(
-            writer,
-            "Starting periodic RTC timer for {DELAY_SECS} seconds..."
-        )
-        .unwrap();
-        writer.flush();
-        Countdown::start(&mut rtc, DELAY_SECS.secs());
-        block!(Countdown::wait(&mut rtc)).unwrap();
-        writeln!(writer, "Waiting another {DELAY_SECS} seconds...").unwrap();
-        writer.flush();
-        block!(Countdown::wait(&mut rtc)).unwrap();
-        writeln!(writer, "One more delay of {DELAY_SECS} seconds...").unwrap();
-        writer.flush();
-        block!(Countdown::wait(&mut rtc)).unwrap();
-        writeln!(writer, "Periodic `Countdown` test complete!").unwrap();
+            // Periodic countdown timer test with the ehal 0.2 `Countdown` trait
+            writeln!(
+                writer,
+                "Starting periodic RTC timer for {DELAY_SECS} seconds..."
+            )
+            .unwrap();
+            writer.flush();
+            Countdown::start(&mut rtc, DELAY_SECS.secs());
+            block!(Countdown::wait(&mut rtc)).unwrap();
+            writeln!(writer, "Waiting another {DELAY_SECS} seconds...").unwrap();
+            writer.flush();
+            block!(Countdown::wait(&mut rtc)).unwrap();
+            writeln!(writer, "One more delay of {DELAY_SECS} seconds...").unwrap();
+            writer.flush();
+            block!(Countdown::wait(&mut rtc)).unwrap();
+            writeln!(writer, "Periodic `Countdown` test complete!").unwrap();
 
-        // Delay with the ehal `DelayNs` trait
-        let mut writer = screens.wait_for_button();
-        writeln!(writer, "Delaying for {DELAY_SECS} seconds...").unwrap();
-        writer.flush();
-        rtc.delay_ms(DELAY_SECS as u32 * 1000);
-        writeln!(writer, "Delaying another {DELAY_SECS} seconds...").unwrap();
-        writer.flush();
-        rtc.delay_ms(DELAY_SECS as u32 * 1000);
-        writeln!(writer, "`DelayNs` test complete!").unwrap();
-        let _ = screens.wait_for_button();
+            // Delay with the ehal `DelayNs` trait
+            let mut writer = self.wait_for_button();
+            writeln!(writer, "Delaying for {DELAY_SECS} seconds...").unwrap();
+            writer.flush();
+            rtc.delay_ms(DELAY_SECS as u32 * 1000);
+            writeln!(writer, "Delaying another {DELAY_SECS} seconds...").unwrap();
+            writer.flush();
+            rtc.delay_ms(DELAY_SECS as u32 * 1000);
+            writeln!(writer, "`DelayNs` test complete!").unwrap();
+            let _ = self.wait_for_button();
 
-        // Now test clock mode
-        let mut rtc = rtc.into_clock_mode();
-        screens.show_counts(&mut rtc, "Basic clock mode test");
-        screens.date_rollover(&mut rtc, 24, 2, 28, "Happy leap day");
-        screens.date_rollover(&mut rtc, 25, 2, 28, "No leap day here");
-        screens.date_rollover(&mut rtc, 29, 12, 31, "Happy new year");
+            // Now test clock mode
+            let mut rtc = rtc.into_clock_mode();
+            self.show_counts(&mut rtc, "Basic clock mode test");
+            self.date_rollover(&mut rtc, 24, 2, 28, "Happy leap day");
+            self.date_rollover(&mut rtc, 25, 2, 28, "No leap day here");
+            self.date_rollover(&mut rtc, 29, 12, 31, "Happy new year");
 
-        rtc_count = Some(rtc.into_count32_mode());
+            rtc_count = Some(rtc.into_count32_mode());
+        }
     }
 }

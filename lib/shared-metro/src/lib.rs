@@ -2,7 +2,10 @@
 
 use bsp::{Pins, RedLed};
 pub use display::DisplayDriver;
-use hal::clock::{ClockGenId, ClockSource, GenericClockController};
+use hal::{
+    clock::{ClockGenId, ClockSource, GenericClockController, RtcClock},
+    delay::Delay,
+};
 pub use input::{Button, Buttons};
 use shared::prelude::*;
 
@@ -18,13 +21,14 @@ pub mod prelude {
 pub type Screens = ScreensGen<DisplayDriver, Buttons>;
 
 pub struct SetupPackage {
+    pub delay: Delay,
     pub display: DisplayDriver,
     pub buttons: Buttons,
     pub red_led: RedLed,
     rtc: Option<pac::Rtc>,
+    pub tc4: pac::Tc4,
     pub clocks: GenericClockController,
     pub pm: pac::Pm,
-    pub syst: pac::SYST,
 }
 impl SetupPackage {
     pub fn new(mut peripherals: pac::Peripherals, core: pac::CorePeripherals) -> Self {
@@ -39,6 +43,9 @@ impl SetupPackage {
         );
         let pins = Pins::new(peripherals.port);
 
+        // Setup the delay
+        let delay = Delay::new(core.SYST, &mut clocks);
+
         // Setup the display
         let i2c = bsp::i2c_master(
             &mut clocks,
@@ -48,19 +55,18 @@ impl SetupPackage {
             pins.sda,
             pins.scl,
         );
-
         let mut display: GraphicsMode<_> = sh1107::Builder::new()
             .with_size(DisplaySize::Display64x128)
             .with_rotation(DisplayRotation::Rotate90)
             .connect_i2c(i2c)
             .into();
 
-        //display.init().await.unwrap();
         display.init().unwrap();
         display.clear();
         display.flush().unwrap();
 
         Self {
+            delay,
             display: display.into(),
             buttons: Buttons {
                 button_a: pins.d9.into_pull_up_input().into(),
@@ -69,32 +75,31 @@ impl SetupPackage {
             },
             red_led: pins.d13.into(),
             rtc: Some(peripherals.rtc),
+            tc4: peripherals.tc4,
             clocks,
             pm: peripherals.pm,
-            syst: core.SYST,
         }
     }
 
-    #[cfg(any(feature = "clock1k", feature = "clock32k"))]
-    pub fn setup_rtc_clock(&mut self) -> Option<pac::Rtc> {
-        #[cfg(feature = "clock1k")]
-        let divider = 32;
-        #[cfg(feature = "clock32k")]
-        let divider = 1;
+    pub fn setup_rtc_clock(&mut self) -> Option<(pac::Rtc, RtcClock)> {
+        self.rtc.take().map(|rtc| {
+            #[cfg(not(feature = "clock32k"))]
+            let divider = 32;
+            #[cfg(feature = "clock32k")]
+            let divider = 1;
 
-        let rtc_clock_src = self
-            .clocks
-            .configure_gclk_divider_and_source(
-                ClockGenId::Gclk3,
-                divider,
-                ClockSource::Xosc32k,
-                false,
-            )
-            .unwrap();
+            let rtc_clock_src = self
+                .clocks
+                .configure_gclk_divider_and_source(
+                    ClockGenId::Gclk3,
+                    divider,
+                    ClockSource::Xosc32k,
+                    false,
+                )
+                .unwrap();
 
-        self.clocks.configure_standby(ClockGenId::Gclk3, true);
-        let _ = self.clocks.rtc(&rtc_clock_src).unwrap();
-
-        self.rtc.take()
+            self.clocks.configure_standby(ClockGenId::Gclk3, true);
+            (rtc, self.clocks.rtc(&rtc_clock_src).unwrap())
+        })
     }
 }

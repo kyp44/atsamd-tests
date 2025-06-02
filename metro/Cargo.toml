@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "basic",
+  "hal-delay-ns",
   "hal-rtc",
 ]
 resolver = "2"
