@@ -3,7 +3,7 @@
 use bsp::{Pins, RedLed};
 pub use display::DisplayDriver;
 use hal::{
-    clock::{ClockGenId, ClockSource, GenericClockController},
+    clock::{ClockGenId, ClockSource, GenericClockController, RtcClock},
     delay::Delay,
 };
 pub use input::{Button, Buttons};
@@ -81,25 +81,25 @@ impl SetupPackage {
         }
     }
 
-    pub fn setup_rtc_clock(&mut self) -> Option<pac::Rtc> {
-        #[cfg(not(feature = "clock32k"))]
-        let divider = 32;
-        #[cfg(feature = "clock32k")]
-        let divider = 1;
+    pub fn setup_rtc_clock(&mut self) -> Option<(pac::Rtc, RtcClock)> {
+        self.rtc.take().map(|rtc| {
+            #[cfg(not(feature = "clock32k"))]
+            let divider = 32;
+            #[cfg(feature = "clock32k")]
+            let divider = 1;
 
-        let rtc_clock_src = self
-            .clocks
-            .configure_gclk_divider_and_source(
-                ClockGenId::Gclk3,
-                divider,
-                ClockSource::Xosc32k,
-                false,
-            )
-            .unwrap();
+            let rtc_clock_src = self
+                .clocks
+                .configure_gclk_divider_and_source(
+                    ClockGenId::Gclk3,
+                    divider,
+                    ClockSource::Xosc32k,
+                    false,
+                )
+                .unwrap();
 
-        self.clocks.configure_standby(ClockGenId::Gclk3, true);
-        let _ = self.clocks.rtc(&rtc_clock_src).unwrap();
-
-        self.rtc.take()
+            self.clocks.configure_standby(ClockGenId::Gclk3, true);
+            (rtc, self.clocks.rtc(&rtc_clock_src).unwrap())
+        })
     }
 }

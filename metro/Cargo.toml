@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "basic",
+  "embassy-test",
   "hal-delay-ns",
   "hal-rtc",
 ]

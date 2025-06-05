@@ -14,8 +14,7 @@ fn main() -> ! {
         Peripherals::take().unwrap(),
         CorePeripherals::take().unwrap(),
     );
-    let rtc = pkg.setup_rtc_clock().unwrap();
-
+    let (rtc, _) = pkg.setup_rtc_clock().unwrap();
     let rtc = Rtc::count32_mode(rtc, RTC_CLOCK_RATE, &mut pkg.pm);
 
     Screens::new(pkg.display, pkg.buttons).hal_rtc_test(rtc);

@@ -13,7 +13,7 @@ fn main() -> ! {
         Peripherals::take().unwrap(),
         CorePeripherals::take().unwrap(),
     );
-    let rtc = pkg.setup_rtc_clock().unwrap();
+    let (rtc, _) = pkg.setup_rtc_clock().unwrap();
 
     // Setup the timer
     let gclk = pkg.clocks.gclk0();
