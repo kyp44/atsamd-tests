@@ -1,0 +1,14 @@
+[package]
+edition = "2021"
+name = "embassy-stress"
+version = "0.1.0"
+
+[dependencies]
+atsamd-hal = {version = "0.22", features = ["embassy-time"]}
+cortex-m-rt = "0.7.5"
+critical-section = "1.2.0"
+embassy-executor = {version = "0.7.0", features = ["nightly", "arch-cortex-m", "executor-thread"]}
+embassy-sync = "0.6.2"
+embassy-time = "0.4.0"
+shared-metro = {path = "../../lib/shared-metro", features = ["clock32k"]}
+static_cell = "2.1.0"

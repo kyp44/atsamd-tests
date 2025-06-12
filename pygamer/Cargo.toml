@@ -3,6 +3,7 @@ members = [
   "basic",
   "clock-tree",
   "delay-ns",
+  "embassy-stress",
   "rtc",
   "rtic-basic",
   "rtic-count-sequence",

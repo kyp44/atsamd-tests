@@ -2,6 +2,7 @@
 members = [
   "basic",
   "delay-ns",
+  "embassy-stress",
   "rtc",
   "rtic-stress",
 ]
