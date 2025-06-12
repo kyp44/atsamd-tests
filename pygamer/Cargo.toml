@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "basic",
+  "embassy-stress",
   "hal-clock-tree",
   "hal-delay-ns",
   "hal-rtc",
