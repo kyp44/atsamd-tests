@@ -1,0 +1,12 @@
+[package]
+edition = "2021"
+name = "embassy-stress"
+version = "0.1.0"
+
+[dependencies]
+atsamd-hal = {version = "0.22", features = ["embassy-time"]}
+cortex-m-rt = "0.7.5"
+critical-section = "1.2.0"
+embassy-executor = {version = "0.7.0", features = ["arch-cortex-m", "executor-thread", "task-arena-size-8192"]}
+embassy-time = "0.4.0"
+shared-pygamer = {path = "../../lib/shared-pygamer"}
