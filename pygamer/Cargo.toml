@@ -4,9 +4,9 @@ members = [
   "hal-clock-tree",
   "hal-delay-ns",
   "hal-rtc",
-  "monotonic-basic",
-  "monotonic-count-sequence",
-  "monotonic-stress",
+  "rtic-basic",
+  "rtic-count-sequence",
+  "rtic-stress",
 ]
 resolver = "2"
 
