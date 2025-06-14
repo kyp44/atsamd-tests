@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "monotonic-basic"
+name = "rtic-basic"
 version = "0.1.0"
 
 [dependencies]
