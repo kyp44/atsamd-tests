@@ -4,6 +4,7 @@ members = [
   "embassy-stress",
   "hal-delay-ns",
   "hal-rtc",
+  "rtic-stress",
 ]
 resolver = "2"
 
