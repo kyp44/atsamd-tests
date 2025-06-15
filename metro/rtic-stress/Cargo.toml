@@ -5,7 +5,7 @@ version = "0.1.0"
 
 [dependencies]
 atsamd-hal = {version = "0.22", features = ["rtic"]}
-shared-metro = {path = "../../lib/shared-metro"}
+shared-metro = {path = "../../lib/shared-metro", features = ["rtic"]}
 
 [features]
 clock1k = ["shared-metro/clock1k"]

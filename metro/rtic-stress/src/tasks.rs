@@ -1,13 +1,15 @@
 use core::ops::DerefMut;
-use embassy_time::Timer;
 use embedded_graphics::{pixelcolor::BinaryColor, prelude::*, primitives};
+use rtic::Mutex;
 use shared_metro::prelude::*;
-
-use super::SharedDisplay;
 
 const COLORS: &[BinaryColor] = &[BinaryColor::On, BinaryColor::Off];
 
-pub async fn test_task(display: &'static SharedDisplay, position: u32, delay_ms: u64) -> ! {
+pub async fn test_task<D: Mutex<T = DisplayDriver>>(
+    mut display: D,
+    position: u32,
+    delay_ms: u32,
+) -> ! {
     // TODO: This calculate can be abstracted out for re-use
     const PATCH_SIZE: u32 = 10;
     const ROW_LEN: u32 = 128 / PATCH_SIZE;

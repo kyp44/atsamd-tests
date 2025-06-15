@@ -13,7 +13,7 @@ mod tasks;
 
 const BASE_PERIOD_MS: u32 = 1000;
 
-#[rtic::app(device = pac, dispatchers = [EVSYS_0])]
+#[rtic::app(device = pac, dispatchers = [TCC0])]
 mod app {
     use super::*;
     use bsp::RedLed;
@@ -26,7 +26,6 @@ mod app {
     #[local]
     struct Local {
         red_led: RedLed,
-        neopixels: NeoPixelsDriver,
     }
 
     #[init]
@@ -50,7 +49,6 @@ mod app {
             },
             Local {
                 red_led: pkg.red_led,
-                neopixels: pkg.neopixels,
             },
         )
     }
@@ -61,10 +59,5 @@ mod app {
             rtic::export::wfi();
             cx.local.red_led.toggle().unwrap();
         }
-    }
-
-    #[task(priority = 1, local=[neopixels])]
-    async fn test_neopixels(cx: test_neopixels::Context) {
-        neopixels_task(cx.local.neopixels, BASE_PERIOD_MS).await
     }
 }
