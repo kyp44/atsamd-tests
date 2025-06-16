@@ -11,4 +11,5 @@ shared = {path = "../shared", features = ["metro"]}
 [features]
 clock1k = ["shared/clock1k"]
 clock32k = ["shared/clock32k"]
+rtic = ["shared/rtic-metro"]
 systick = ["shared/systick"]

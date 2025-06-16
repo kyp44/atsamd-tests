@@ -1,16 +1,16 @@
 use crate::display::{Display, DisplayTextStyle, DisplayWriter};
 use crate::prelude::pac;
-use atsamd_hal::{prelude::*};
+use atsamd_hal::prelude::*;
 #[cfg(any(feature = "clock1k", feature = "clock32k"))]
 use atsamd_hal::{fugit::ExtU64, rtc::rtic::rtc_clock, rtc_monotonic};
-#[cfg(feature = "systick")]
-use rtic_monotonics::Monotonic;
 use core::fmt::Write;
 use core::future::Future;
 use embedded_graphics::{mono_font, prelude::*, text};
+#[cfg(feature = "systick")]
+use rtic_monotonics::Monotonic;
 
 #[cfg(not(any(feature = "clock1k", feature = "clock32k", feature = "systick")))]
-compile_error!("A clock feature or systick must be specified");
+compile_error!("A clock rate feature or systick must be specified");
 
 #[cfg(not(any(feature = "metro", feature = "pygamer")))]
 compile_error!("A platform feature must be specified");
@@ -31,12 +31,6 @@ impl Mono {
     pub fn delay_ms(delay: u32) -> impl Future<Output = ()> {
         Self::delay(delay.millis())
     }
-
-    #[cfg(feature = "debug")]
-    #[inline]
-    pub fn delay_ms_debug(delay: u32, id: u32) -> impl Future<Output = ()> {
-        Self::delay_debug(delay.millis(), id)
-    }
 }
 
 #[cfg(not(feature = "systick"))]
@@ -44,12 +38,6 @@ impl Mono {
     #[inline]
     pub fn delay_ms(delay: u32) -> impl Future<Output = ()> {
         Self::delay(u64::from(delay).millis())
-    }
-
-    #[cfg(feature = "debug")]
-    #[inline]
-    pub fn delay_ms_debug(delay: u32, id: u32) -> impl Future<Output = ()> {
-        Self::delay_debug(u64::from(delay).millis(), id)
     }
 }
 

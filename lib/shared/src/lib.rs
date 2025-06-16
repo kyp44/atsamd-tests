@@ -6,7 +6,7 @@
 use core::future::Future;
 
 #[cfg(all(
-    feature = "rtic",
+    any(feature = "rtic-metro", feature = "rtic-pygamer",),
     not(any(feature = "clock1k", feature = "clock32k", feature = "systick"))
 ))]
 compile_error!("When using RTIC a clock rate or systick must be specified");
@@ -18,7 +18,7 @@ compile_error!("Cannot select both clocks.");
 use atsamd_hal::time::Hertz;
 
 mod display;
-#[cfg(any(feature = "clock1k", feature = "clock32k", feature = "systick"))]
+#[cfg(any(feature = "rtic-metro", feature = "rtic-pygamer",))]
 mod monotonic;
 mod screens;
 #[cfg(any(feature = "metro", feature = "pygamer"))]
@@ -31,7 +31,7 @@ pub const RTC_CLOCK_RATE: Hertz = Hertz::from_raw(32768);
 
 pub mod prelude {
     pub use super::display::*;
-    #[cfg(any(feature = "clock1k", feature = "clock32k", feature = "systick"))]
+    #[cfg(any(feature = "rtic-metro", feature = "rtic-pygamer",))]
     pub use super::monotonic::{display_monotonic_info, Mono};
     pub use super::Input;
     #[cfg(any(feature = "clock1k", feature = "clock32k"))]
@@ -50,7 +50,7 @@ pub mod prelude {
     pub use embedded_graphics;
     #[cfg(any(feature = "metro", feature = "pygamer"))]
     pub use pac::{CorePeripherals, Peripherals};
-    #[cfg(feature = "rtic")]
+    #[cfg(any(feature = "rtic-metro", feature = "rtic-pygamer"))]
     pub use rtic;
 }
 pub trait Input {

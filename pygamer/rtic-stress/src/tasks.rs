@@ -3,6 +3,7 @@ use embedded_graphics::pixelcolor::Rgb565;
 use embedded_graphics::prelude::*;
 use embedded_graphics::primitives;
 use embedded_graphics::text;
+#[cfg(any(feature = "clock1k", feature = "clock32k"))]
 use hal::prelude::*;
 use rtic::Mutex;
 use shared_pygamer::prelude::*;
@@ -46,9 +47,6 @@ pub async fn test_task<D: Mutex<T = DisplayDriver>>(
                 .unwrap();
         });
 
-        #[cfg(feature = "debug")]
-        Mono::delay_ms_debug(delay_ms, position).await;
-        #[cfg(not(feature = "debug"))]
         Mono::delay_ms(delay_ms).await;
     }
 

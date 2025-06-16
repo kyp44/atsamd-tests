@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "hal-clock-tree"
+name = "clock-tree"
 version = "0.1.0"
 
 [dependencies]

@@ -31,9 +31,6 @@ async fn test_task<D: Mutex<T = DisplayDriver>>(
 
         match task_id {
             Some(_id) => {
-                #[cfg(feature = "debug")]
-                Mono::delay_ms_debug(cycle_time_ms, _id).await;
-                #[cfg(not(feature = "debug"))]
                 Mono::delay_ms(cycle_time_ms).await;
             }
             None => Mono::delay_ms(cycle_time_ms).await,

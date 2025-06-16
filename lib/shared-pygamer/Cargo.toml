@@ -12,7 +12,6 @@ ws2812-spi = {version = "0.5", features = ["mosi_idle_high"], optional = true}
 [features]
 clock1k = ["shared/clock1k"]
 clock32k = ["shared/clock32k"]
-debug = ["rtic"]
 neopixels = ["dep:smart-leds", "dep:ws2812-spi", "shared/neopixels"]
-rtic = ["shared/rtic"]
+rtic = ["shared/rtic-pygamer"]
 systick = ["shared/systick"]

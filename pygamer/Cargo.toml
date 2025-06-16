@@ -1,9 +1,9 @@
 [workspace]
 members = [
   "basic",
-  "hal-clock-tree",
-  "hal-delay-ns",
-  "hal-rtc",
+  "clock-tree",
+  "delay-ns",
+  "rtc",
   "rtic-basic",
   "rtic-count-sequence",
   "rtic-stress",

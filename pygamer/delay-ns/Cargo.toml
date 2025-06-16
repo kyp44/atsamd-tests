@@ -1,9 +1,7 @@
 [package]
 edition = "2021"
-name = "hal-rtc"
+name = "delay-ns"
 version = "0.1.0"
 
 [dependencies]
-# TODO: This will not be needed when PR is merged
-shared = {path = "../../lib/shared", features = ["hal-rtc-test"]}
 shared-pygamer = {path = "../../lib/shared-pygamer", features = ["clock1k"]}

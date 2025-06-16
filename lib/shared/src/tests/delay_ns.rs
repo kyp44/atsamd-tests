@@ -30,7 +30,7 @@ where
         self.wait_for_button();
     }
 
-    pub fn hal_delay_ns_test<TC: Count16>(
+    pub fn delay_ns_test<TC: Count16>(
         mut self,
         mut delay: Delay,
         mut timer: TimerCounter<TC>,
@@ -43,11 +43,11 @@ where
         writeln!(writer, "Press button to start the tests").unwrap();
         self.wait_for_button();
 
-        loop {
-            self.test_delay("Delay", &mut delay);
-            self.test_delay("TimerCounter", &mut timer);
-            // TODO: This depends on the RTC rework PR being merged: https://github.com/atsamd-rs/atsamd/pull/845
-            //test_delay(&mut screens, "Rtc", &mut rtc);
-        }
+        self.test_delay("Delay", &mut delay);
+        self.test_delay("TimerCounter", &mut timer);
+        // TODO: This depends on the RTC rework PR being merged: https://github.com/atsamd-rs/atsamd/pull/845
+        //test_delay(&mut screens, "Rtc", &mut rtc);
+
+        self.test_complete();
     }
 }

@@ -30,12 +30,6 @@ impl Mono {
     pub fn delay_ms(delay: u32) -> impl Future<Output = ()> {
         Self::delay(delay.millis())
     }
-
-    #[cfg(feature = "debug")]
-    #[inline]
-    pub fn delay_ms_debug(delay: u32, id: u32) -> impl Future<Output = ()> {
-        Self::delay_debug(delay.millis(), id)
-    }
 }
 
 #[cfg(not(any(feature = "systick")))]
@@ -43,12 +37,6 @@ impl Mono {
     #[inline]
     pub fn delay_ms(delay: u32) -> impl Future<Output = ()> {
         Self::delay(u64::from(delay).millis())
-    }
-
-    #[cfg(feature = "debug")]
-    #[inline]
-    pub fn delay_ms_debug(delay: u32, id: u32) -> impl Future<Output = ()> {
-        Self::delay_debug(u64::from(delay).millis(), id)
     }
 }
 

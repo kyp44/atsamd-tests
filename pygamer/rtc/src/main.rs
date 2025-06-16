@@ -15,7 +15,7 @@ fn main() -> ! {
     );
     let rtc = pkg.setup_rtc_clock().unwrap();
 
-    Screens::new(pkg.display, pkg.buttons).hal_rtc_test(Rtc::count32_mode(
+    Screens::new(pkg.display, pkg.buttons).rtc_test(Rtc::count32_mode(
         rtc,
         RTC_CLOCK_RATE,
         &mut pkg.mclk,
