@@ -1,5 +1,6 @@
 use embedded_graphics::prelude::*;
 use embedded_graphics::{mono_font, pixelcolor::BinaryColor, primitives, text};
+#[cfg(not(feature = "systick"))]
 use hal::prelude::*;
 use rtic::Mutex;
 use shared_metro::prelude::*;
