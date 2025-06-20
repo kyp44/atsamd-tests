@@ -1,4 +1,4 @@
-use crate::{display::Display, screens::ScreensGen, Input};
+use crate::{Input, display::Display, screens::ScreensGen};
 use atsamd_hal::{
     delay::Delay,
     ehal::delay::DelayNs,

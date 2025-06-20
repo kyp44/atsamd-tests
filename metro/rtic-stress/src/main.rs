@@ -7,9 +7,7 @@
 
 use hal::prelude::*;
 use shared_metro::prelude::*;
-use tasks::test_task;
-
-mod tasks;
+use shared_metro::tests::async_stress::{self, test_task};
 
 const BASE_PERIOD_MS: u32 = 1000;
 
@@ -64,7 +62,7 @@ mod app {
 
     #[task(priority = 1, shared=[display])]
     async fn clock_task(cx: clock_task::Context) {
-        tasks::clock_task(cx.shared.display).await
+        async_stress::clock_task(cx.shared.display).await
     }
 
     #[inline]

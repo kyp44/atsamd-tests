@@ -30,12 +30,12 @@ pub const RTC_CLOCK_RATE: Hertz = Hertz::from_raw(1024);
 pub const RTC_CLOCK_RATE: Hertz = Hertz::from_raw(32768);
 
 pub mod prelude {
-    pub use super::display::*;
-    #[cfg(any(feature = "rtic-metro", feature = "rtic-pygamer",))]
-    pub use super::monotonic::{display_monotonic_info, Mono};
     pub use super::Input;
     #[cfg(any(feature = "clock1k", feature = "clock32k"))]
     pub use super::RTC_CLOCK_RATE;
+    pub use super::display::*;
+    #[cfg(any(feature = "rtic-metro", feature = "rtic-pygamer",))]
+    pub use super::monotonic::{Mono, display_monotonic_info};
     pub use super::{block_on, screens::ScreensGen};
     #[cfg(feature = "metro")]
     pub use metro_m0::{self as bsp, hal, pac};

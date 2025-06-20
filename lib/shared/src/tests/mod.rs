@@ -1,9 +1,9 @@
-use crate::{display::Display, screens::ScreensGen, Input};
+use crate::{Input, display::Display, screens::ScreensGen};
 use core::fmt::Write;
 
+#[cfg(any(feature = "rtic-metro", feature = "rtic-pygamer"))]
+pub mod async_stress;
 mod delay_ns;
-// TODO: Once the PR gets merged, this will not longer need to be feature-gated
-#[cfg(feature = "rtc-test")]
 mod rtc;
 
 impl<D: Display, I: Input> ScreensGen<D, I>

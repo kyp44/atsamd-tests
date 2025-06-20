@@ -4,7 +4,5 @@ name = "rtc"
 version = "0.1.0"
 
 [dependencies]
-# TODO: This will not be needed when PR is merged
-shared = {path = "../../lib/shared", features = ["rtc-test"]}
 # NOTE: A clock rate of 1 kHz is required for the RTC clock mode
 shared-metro = {path = "../../lib/shared-metro", features = ["clock1k"]}

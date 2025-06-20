@@ -1,7 +1,7 @@
 use crate::{
+    Input,
     display::{Display, DisplayWriter},
     screens::ScreensGen,
-    Input,
 };
 use atsamd_hal::{
     ehal::delay::DelayNs,

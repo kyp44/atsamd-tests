@@ -4,13 +4,27 @@
 
 use hal::prelude::*;
 use shared_pygamer::prelude::*;
-
-mod tasks;
-
-use tasks::neopixels_task;
-use tasks::{clock_task, test_task};
+use shared_pygamer::tests::async_stress::{self, test_task};
 
 const BASE_PERIOD_MS: u32 = 1000;
+
+pub async fn neopixels_task(neopixels: &mut NeoPixelsDriver, delay_ms: u32) -> ! {
+    let mut colors = [
+        RGB8::new(10, 0, 0),
+        RGB8::new(0, 10, 0),
+        RGB8::new(0, 0, 10),
+    ]
+    .into_iter()
+    .cycle();
+
+    loop {
+        neopixels.write(colors.clone().take(5)).unwrap();
+
+        colors.next().unwrap();
+
+        Mono::delay_ms(delay_ms).await;
+    }
+}
 
 #[rtic::app(device = pac, dispatchers = [EVSYS_0])]
 mod app {
@@ -4677,6 +4691,6 @@ mod app {
 
     #[task(priority = 1, shared=[display])]
     async fn test_clock(cx: test_clock::Context) {
-        clock_task(cx.shared.display).await
+        async_stress::clock_task(cx.shared.display).await
     }
 }

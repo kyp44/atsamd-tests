@@ -46,7 +46,7 @@ pub trait Display: DrawTarget + OriginDimensions {
     fn flush(&mut self);
 
     #[inline]
-    fn character_style(&self) -> MonoTextStyle<'static, Self::Color> {
+    fn character_style() -> MonoTextStyle<'static, Self::Color> {
         mono_font::MonoTextStyleBuilder::new()
             .font(&Self::FONT)
             .text_color(Self::TEXT_COLOR)
@@ -59,7 +59,7 @@ pub trait Display: DrawTarget + OriginDimensions {
         DisplayTextStyle::new(
             position,
             Some(self.size()),
-            self.character_style(),
+            Self::character_style(),
             text::TextStyleBuilder::new()
                 .baseline(text::Baseline::Top)
                 .build(),

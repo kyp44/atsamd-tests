@@ -1,8 +1,8 @@
+use crate::SetupPackage;
 use crate::hal::{
     gpio,
     sercom::{self, i2c},
 };
-use crate::SetupPackage;
 use derive_more::From;
 use embedded_graphics::{mono_font, pixelcolor::BinaryColor, prelude::*};
 use sh1107::prelude::*;

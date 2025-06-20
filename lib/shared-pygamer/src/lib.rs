@@ -9,15 +9,16 @@ use shared::prelude::*;
 
 mod display;
 mod input;
+pub mod tests;
 
 pub mod prelude {
     #[cfg(feature = "neopixels")]
     pub use super::NeoPixelsDriver;
-    pub use super::{display::DisplayDriver, input::Buttons, Screens, SetupPackage};
+    pub use super::{Screens, SetupPackage, display::DisplayDriver, input::Buttons};
     pub use bsp::entry;
     pub use shared::prelude::*;
     #[cfg(feature = "neopixels")]
-    pub use smart_leds::{SmartLedsWrite, RGB8};
+    pub use smart_leds::{RGB8, SmartLedsWrite};
 }
 
 #[cfg(feature = "neopixels")]

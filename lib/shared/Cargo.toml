@@ -20,11 +20,9 @@ rtic-monotonics = {version = "2.0.3", features = ["cortex-m-systick"], optional 
 [features]
 clock1k = ["atsamd-hal/rtic"]
 clock32k = ["atsamd-hal/rtic"]
-# TODO: This will not be needed when PR is merged
 metro = ["dep:metro_m0"]
 neopixels = ["pygamer/neopixel-spi"]
 pygamer = ["dep:pygamer"]
-rtc-test = []
 rtic-metro = ["dep:rtic", "rtic/thumbv6-backend", "atsamd-hal/rtic"]
 rtic-pygamer = ["dep:rtic", "rtic/thumbv7-backend", "atsamd-hal/rtic"]
 systick = ["dep:rtic-monotonics"]

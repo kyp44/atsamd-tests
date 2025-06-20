@@ -11,6 +11,7 @@ use shared::prelude::*;
 
 mod display;
 mod input;
+pub mod tests;
 
 pub mod prelude {
     pub use super::{Buttons, DisplayDriver, Screens, SetupPackage};

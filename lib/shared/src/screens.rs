@@ -1,6 +1,6 @@
 use crate::{
-    display::{Display, DisplayWriter},
     Input,
+    display::{Display, DisplayWriter},
 };
 use derive_new::new;
 use embedded_graphics::{prelude::*, text};
@@ -25,7 +25,7 @@ where
         text::Text::with_text_style(
             "Press a button to continue...",
             Point::new(0, (self.display.size().height - 1) as i32),
-            self.display.character_style(),
+            D::character_style(),
             text::TextStyleBuilder::new()
                 .baseline(text::Baseline::Bottom)
                 .build(),
