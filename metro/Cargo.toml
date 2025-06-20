@@ -3,6 +3,7 @@ members = [
   "basic",
   "delay-ns",
   "rtc",
+  "rtic-stress",
 ]
 resolver = "2"
 

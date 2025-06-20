@@ -1,5 +1,6 @@
-use core::ops::DerefMut;
-use embedded_graphics::{pixelcolor::BinaryColor, prelude::*, primitives};
+use embedded_graphics::prelude::*;
+use embedded_graphics::{mono_font, pixelcolor::BinaryColor, primitives, text};
+use hal::prelude::*;
 use rtic::Mutex;
 use shared_metro::prelude::*;
 
@@ -23,18 +24,39 @@ pub async fn test_task<D: Mutex<T = DisplayDriver>>(
     );
 
     for color in COLORS.iter().cycle() {
-        let mut guard = display.lock().await;
-        let disp = guard.deref_mut();
+        display.lock(|disp| {
+            rectangle
+                .into_styled(primitives::PrimitiveStyle::with_fill(*color))
+                .draw(disp)
+                .unwrap();
+            disp.flush();
+        });
 
-        rectangle
-            .into_styled(primitives::PrimitiveStyle::with_fill(*color))
-            .draw(disp)
-            .unwrap();
-        disp.flush();
-        drop(guard);
-
-        Timer::after_millis(delay_ms).await;
+        Mono::delay_ms(delay_ms).await;
     }
 
     unreachable!();
+}
+
+pub async fn clock_task<D: Mutex<T = DisplayDriver>>(mut display: D) -> ! {
+    loop {
+        let style = DisplayTextStyle::new(
+            Point::new(0, 64),
+            None,
+            mono_font::MonoTextStyleBuilder::new()
+                .font(&DisplayDriver::FONT)
+                .text_color(BinaryColor::On)
+                .background_color(BinaryColor::Off)
+                .build(),
+            text::TextStyleBuilder::new()
+                .baseline(text::Baseline::Bottom)
+                .build(),
+        );
+
+        display.lock(|d| {
+            write!(DisplayWriter::new(d, style), "0x{:X}", Mono::now().ticks()).unwrap();
+        });
+
+        Mono::delay_ms(500).await;
+    }
 }

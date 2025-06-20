@@ -71,8 +71,10 @@ pub fn display_monotonic_info<D: Display>(display: &mut D) {
     let mut writer = DisplayWriter::new(display, style);
 
     #[cfg(feature = "systick")]
-    write!(writer, "systick  ").unwrap();
-    #[cfg(not(feature = "systick"))]
+    write!(writer, "systick ").unwrap();
+    #[cfg(all(not(feature = "systick"), feature = "metro"))]
+    write!(writer, "mode1 ").unwrap();
+    #[cfg(all(not(feature = "systick"), feature = "pygamer"))]
     write!(writer, "mode0 ").unwrap();
 
     #[cfg(feature = "clock1k")]
