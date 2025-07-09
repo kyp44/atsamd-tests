@@ -10,7 +10,7 @@ impl<D: Display, I: Input> ScreensGen<D, I>
 where
     D::Error: core::fmt::Debug,
 {
-    fn test_complete(mut self) -> ! {
+    pub fn test_complete(mut self) -> ! {
         let mut writer = self.new_screen();
 
         writeln!(writer, "The test is complete.\n\nReset to run again.").unwrap();

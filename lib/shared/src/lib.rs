@@ -1,5 +1,4 @@
 #![no_std]
-#![feature(let_chains)]
 #![feature(iter_advance_by)]
 #![feature(generic_const_exprs)]
 
