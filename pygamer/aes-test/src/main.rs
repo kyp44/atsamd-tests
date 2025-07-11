@@ -2,6 +2,7 @@
 #![no_std]
 #![no_main]
 
+use hal as atsamd_hal;
 use shared_pygamer::prelude::*;
 
 #[entry]
@@ -27,22 +28,25 @@ fn main() -> ! {
     // Activate the RustCrypto backend
     let crypto = aes.activate_rustcrypto_backend();
 
+    // Set up key and data block
     let key = GenericArray::from_slice(&[0u8; 16]);
     let mut block = aes::Block::default();
 
     // Initialize cipher
-    let cipher = crypto.new_128bit(key);
+    let cipher = crypto.into_128bit(key);
 
+    // This copies the entire block
     let block_copy = block;
 
-    // Encrypt block in-place
+    // Encrypt block in-place and verify that it is different
     cipher.encrypt_block(&mut block);
+    assert_ne!(block, block_copy);
 
-    // And decrypt it back
+    // Decrypt it back and verify that is the same as it was
     cipher.decrypt_block(&mut block);
     assert_eq!(block, block_copy);
 
-    // Just show that the test has comleted
+    // Just show that the test has completed
     let pkg = SetupPackage::new(
         unsafe { Peripherals::steal() },
         CorePeripherals::take().unwrap(),

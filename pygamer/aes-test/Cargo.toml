@@ -6,5 +6,4 @@ version = "0.1.0"
 
 [dependencies]
 aes = "0.8.4"
-atsamd-hal = {version = "0.22", features = ["enable_unsafe_aes_newblock_cipher"]}
 shared-pygamer = {path = "../../lib/shared-pygamer"}
