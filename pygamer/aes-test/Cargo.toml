@@ -1,5 +1,5 @@
 [package]
-edition = "2021"
+edition = "2024"
 # This cannot simply be named `aes` due to the dependency with the same name.
 name = "aes-test"
 version = "0.1.0"
