@@ -4,6 +4,7 @@ members = [
   "basic",
   "clock-tree",
   "delay-ns",
+  "dsu",
   "rtc",
   "rtic-basic",
   "rtic-count-sequence",

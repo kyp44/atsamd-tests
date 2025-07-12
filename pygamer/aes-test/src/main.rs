@@ -1,4 +1,4 @@
-//! A basic Hello World test program.
+//! Tests encryption and decryption using the AES peripheral.
 #![no_std]
 #![no_main]
 

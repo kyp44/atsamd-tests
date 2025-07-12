@@ -1,7 +1,8 @@
 [package]
 edition = "2024"
-name = "clock-tree"
+name = "dsu"
 version = "0.1.0"
 
 [dependencies]
+aligned = "0.4.2"
 shared-pygamer = {path = "../../lib/shared-pygamer"}
