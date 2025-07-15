@@ -1,0 +1,7 @@
+[package]
+edition = "2024"
+name = "icm"
+version = "0.1.0"
+
+[dependencies]
+shared-pygamer = {path = "../../lib/shared-pygamer"}

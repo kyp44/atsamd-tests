@@ -5,6 +5,7 @@ members = [
   "clock-tree",
   "delay-ns",
   "dsu",
+  "icm",
   "rtc",
   "rtic-basic",
   "rtic-count-sequence",
