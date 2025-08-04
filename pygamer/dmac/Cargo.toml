@@ -1,0 +1,8 @@
+[package]
+edition = "2024"
+name = "dmac"
+version = "0.1.0"
+
+[dependencies]
+atsamd-hal = {version = "0.22", features = ["dma"]}
+shared-pygamer = {path = "../../lib/shared-pygamer"}

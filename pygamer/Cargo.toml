@@ -4,6 +4,8 @@ members = [
   "basic",
   "clock-tree",
   "delay-ns",
+  "dmac",
+  "dmac-rtic",
   "dsu",
   "icm",
   "rtc",
