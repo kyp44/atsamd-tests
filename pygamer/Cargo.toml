@@ -12,6 +12,7 @@ members = [
   "rtic-basic",
   "rtic-count-sequence",
   "rtic-stress",
+  "usb",
 ]
 resolver = "2"
 

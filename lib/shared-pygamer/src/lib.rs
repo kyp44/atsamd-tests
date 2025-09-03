@@ -1,6 +1,6 @@
 #![no_std]
 
-use bsp::{Pins, RedLed};
+use bsp::{Pins, RedLed, pins::USB};
 use display::DisplayDriver;
 use embedded_graphics::prelude::*;
 use hal::{clock::GenericClockController, delay::Delay};
@@ -38,6 +38,9 @@ pub struct SetupPackage {
     pub clocks: GenericClockController,
     pub mclk: pac::Mclk,
     pub osc32kctrl: pac::Osc32kctrl,
+    pub usb: pac::Usb,
+    pub usb_pins: USB,
+    pub nvic: pac::NVIC,
 }
 impl SetupPackage {
     pub fn new(mut peripherals: pac::Peripherals, core: pac::CorePeripherals) -> Self {
@@ -100,6 +103,9 @@ impl SetupPackage {
             clocks,
             mclk: peripherals.mclk,
             osc32kctrl: peripherals.osc32kctrl,
+            usb: peripherals.usb,
+            usb_pins: pins.usb,
+            nvic: core.NVIC,
         }
     }
 
