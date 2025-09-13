@@ -20,11 +20,7 @@ fn main() -> ! {
     );
 
     let bus_allocator = unsafe {
-        let _ = USB_ALLOCATOR.set(pkg.usb.init(
-            peripherals.usb,
-            &mut clocks,
-            &mut peripherals.mclk,
-        ));
+        let _ = USB_ALLOCATOR.set(pkg.usb.init(pkg.usb, &mut pkg.clocks, &mut pkg.mclk));
         USB_ALLOCATOR.get().unwrap()
     };
 
