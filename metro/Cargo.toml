@@ -4,6 +4,7 @@ members = [
   "delay-ns",
   "rtc",
   "rtic-stress",
+  "usb-clock",
 ]
 resolver = "2"
 

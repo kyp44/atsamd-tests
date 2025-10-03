@@ -5,6 +5,7 @@ pub use display::DisplayDriver;
 use hal::{
     clock::{ClockGenId, ClockSource, GenericClockController, RtcClock},
     delay::Delay,
+    gpio::{PA24, PA25, Pin, Reset},
 };
 pub use input::{Button, Buttons};
 use shared::prelude::*;
@@ -30,6 +31,10 @@ pub struct SetupPackage {
     pub tc4: pac::Tc4,
     pub clocks: GenericClockController,
     pub pm: pac::Pm,
+    pub usb: pac::Usb,
+    pub usb_dm: Pin<PA24, Reset>,
+    pub usb_dp: Pin<PA25, Reset>,
+    pub nvic: pac::NVIC,
 }
 impl SetupPackage {
     pub fn new(mut peripherals: pac::Peripherals, core: pac::CorePeripherals) -> Self {
@@ -79,6 +84,10 @@ impl SetupPackage {
             tc4: peripherals.tc4,
             clocks,
             pm: peripherals.pm,
+            usb: peripherals.usb,
+            usb_dm: pins.usb_dm,
+            usb_dp: pins.usb_dp,
+            nvic: core.NVIC,
         }
     }
 

@@ -4,7 +4,6 @@ name = "usb"
 version = "0.1.0"
 
 [dependencies]
-atsamd-hal = {version = "0.22", features = ["usb"]}
 heapless = "0.9.1"
 pygamer = {version = "0.15", features = ["usb"]}
 shared-pygamer = {path = "../../lib/shared-pygamer"}
