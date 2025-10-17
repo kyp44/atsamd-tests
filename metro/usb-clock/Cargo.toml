@@ -4,9 +4,7 @@ name = "usb-clock"
 version = "0.1.0"
 
 [dependencies]
-heapless = "0.9.1"
+atsamd-usb-serial = {version = "0.1.0", features = ["samd21g", "read-buf-128", "heapless"]}
 metro_m0 = {version = "0.19.2", features = ["usb"]}
 nom = {version = "8.0", default-features = false}
 shared-metro = {path = "../../lib/shared-metro", features = ["clock1k"]}
-usb-device = "0.3.2"
-usbd-serial = "0.2.2"
