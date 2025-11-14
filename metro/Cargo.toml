@@ -5,6 +5,7 @@ members = [
   "rtc",
   "rtic-stress",
   "usb-clock",
+  "usb-serial-example",
 ]
 resolver = "2"
 

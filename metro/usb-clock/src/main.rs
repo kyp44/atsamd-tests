@@ -1,7 +1,6 @@
 //! Just a basic program to test the display and its buttons.
 #![no_std]
 #![no_main]
-#![allow(static_mut_refs)]
 
 use core::str;
 

@@ -1,0 +1,9 @@
+[package]
+edition = "2024"
+name = "usb-serial-example"
+version = "0.1.0"
+
+[dependencies]
+atsamd-usb-serial = {version = "0.1.0", features = ["samd21g", "read-buf-128", "heapless"]}
+metro_m0 = {version = "0.19.2", features = ["usb"]}
+shared-metro = {path = "../../lib/shared-metro"}
