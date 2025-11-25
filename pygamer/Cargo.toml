@@ -13,6 +13,7 @@ members = [
   "rtic-count-sequence",
   "rtic-stress",
   "usb",
+  "qspi",
 ]
 resolver = "2"
 
