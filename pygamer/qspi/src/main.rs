@@ -3,7 +3,7 @@
 #![no_std]
 #![no_main]
 
-use bsp::{Pins, RedLed};
+use bsp::Pins;
 use hal::{
     delay::Delay,
     prelude::*,
@@ -13,16 +13,17 @@ use shared_pygamer::prelude::*;
 
 #[entry]
 fn main() -> ! {
-    let (mut delay, mut red_led) = example();
+    example();
 
-    loop {
-        red_led.toggle();
-        delay.delay_ms(1000u16);
-    }
+    end();
+}
+
+fn end() -> ! {
+    panic!("Made it to the end!");
 }
 
 #[cfg(feature = "clock-v1")]
-fn example() -> (Delay, RedLed) {
+fn example() {
     use hal::clock::GenericClockController;
 
     let mut peripherals = Peripherals::take().unwrap();
@@ -88,9 +89,6 @@ fn example() -> (Delay, RedLed) {
     let mut read_buf = [0u8; 4];
     flash.read_memory(0, &mut read_buf);
     assert_eq!(read_buf, write_buf);
-
-    // END OF ACTUAL EXAMPLE
-    (delay, sets.led_pin.into())
 }
 
 #[cfg(not(feature = "clock-v1"))]
@@ -175,9 +173,6 @@ fn example() {
     let mut read_buf = [0u8; 4];
     flash.read_memory(0, &mut read_buf);
     assert_eq!(read_buf, write_buf);
-
-    /// END OF ACTUAL EXAMPLE
-    sets.led_pin.into()
 }
 
 /// Wait for the write-in-progress and suspended write/erase.
